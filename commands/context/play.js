@@ -1,6 +1,6 @@
 const { ContextMenuCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
-const escapeMarkdown = require("discord.js").Util.escapeMarkdown;
+const { EmbedBuilder, Colors } = require("discord.js");
+const escapeMarkdown = require("discord.js").escapeMarkdown;
 
 module.exports = {
   command: new ContextMenuCommandBuilder().setName("Play Song").setType(3),
@@ -43,11 +43,11 @@ module.exports = {
 
     const ret = await interaction.reply({
       embeds: [
-        new MessageEmbed()
+        new EmbedBuilder()
           .setColor(client.config.embedColor)
           .setDescription(":mag_right: **Searching...**"),
       ],
-      fetchReply: true,
+      withResponse: true,
     });
 
     const query =
@@ -67,8 +67,8 @@ module.exports = {
       await interaction
         .editReply({
           embeds: [
-            new MessageEmbed()
-              .setColor("RED")
+            new EmbedBuilder()
+              .setColor(Colors.Red)
               .setDescription("There was an error while searching"),
           ],
         })
@@ -82,8 +82,8 @@ module.exports = {
       await interaction
         .editReply({
           embeds: [
-            new MessageEmbed()
-              .setColor("RED")
+            new EmbedBuilder()
+              .setColor(Colors.Red)
               .setDescription("No results were found"),
           ],
         })
@@ -99,11 +99,12 @@ module.exports = {
       var title = escapeMarkdown(res.tracks[0].title);
       var title = title.replace(/\]/g, "");
       var title = title.replace(/\[/g, "");
-      let addQueueEmbed = new MessageEmbed()
+      let addQueueEmbed = new EmbedBuilder()
         .setColor(client.config.embedColor)
         .setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
         .setDescription(`[${title}](${res.tracks[0].uri})` || "No Title")
         .setURL(res.tracks[0].uri)
+        .setThumbnail(res.tracks[0].displayThumbnail ? res.tracks[0].displayThumbnail("maxresdefault") : res.tracks[0].thumbnail)
         .addFields(
           {
             name: "Added by",
@@ -122,22 +123,12 @@ module.exports = {
           }
         );
 
-      try {
-        addQueueEmbed.setThumbnail(
-          res.tracks[0].displayThumbnail("maxresdefault")
-        );
-      } catch (err) {
-        addQueueEmbed.setThumbnail(res.tracks[0].thumbnail);
-      }
-
       if (player.queue.totalSize > 1) {
         addQueueEmbed.addFields({
           name: "Position in queue",
           value: `${player.queue.size}`,
           inline: true,
         });
-      } else {
-        player.queue.previous = player.queue.current;
       }
 
       await interaction.editReply({ embeds: [addQueueEmbed] }).catch(this.warn);
@@ -154,7 +145,7 @@ module.exports = {
         player.play();
       }
 
-      let playlistEmbed = new MessageEmbed()
+      let playlistEmbed = new EmbedBuilder()
         .setColor(client.config.embedColor)
         .setAuthor({
           name: "Playlist added to queue",

@@ -2,9 +2,9 @@ const SlashCommand = require("../../lib/SlashCommand");
 const {
   Client,
   Interaction,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
 } = require("discord.js");
 const LoadCommands = require("../../util/loadCommands");
 const { filter } = require("lodash");
@@ -41,7 +41,7 @@ const command = new SlashCommand()
     // default Page No.
     let pageNo = 0;
 
-    const helpEmbed = new MessageEmbed()
+    const helpEmbed = new EmbedBuilder()
       .setColor(client.config.embedColor)
       .setAuthor({
         name: `Commands of ${client.user.username}`,
@@ -71,13 +71,13 @@ const command = new SlashCommand()
 
     // Construction of the buttons for the embed
     const getButtons = (pageNo) => {
-      return new MessageActionRow().addComponents(
-        new MessageButton()
+      return new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
           .setCustomId("help_cmd_but_2_app")
           .setEmoji("◀️")
           .setStyle("PRIMARY")
           .setDisabled(pageNo == 0),
-        new MessageButton()
+        new ButtonBuilder()
           .setCustomId("help_cmd_but_1_app")
           .setEmoji("▶️")
           .setStyle("PRIMARY")
@@ -88,7 +88,7 @@ const command = new SlashCommand()
     const tempMsg = await interaction.editReply({
       embeds: [helpEmbed],
       components: [getButtons(pageNo)],
-      fetchReply: true,
+      withResponse: true,
     });
     const collector = tempMsg.createMessageComponentCollector({
       time: 600000,
@@ -127,7 +127,7 @@ const command = new SlashCommand()
       await iter.update({
         embeds: [helpEmbed],
         components: [getButtons(pageNo)],
-        fetchReply: true,
+        withResponse: true,
       });
     });
   });

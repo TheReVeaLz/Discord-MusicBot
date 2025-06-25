@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("loop")
@@ -16,8 +16,8 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
@@ -26,8 +26,8 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Nothing is playing right now."),
 				],
 				ephemeral: true,
@@ -41,7 +41,7 @@ const command = new SlashCommand()
 		
 		interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(`👍 | **Loop has been \`${ trackRepeat }\`**`),
 			],

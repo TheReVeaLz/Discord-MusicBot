@@ -3,7 +3,7 @@ const { EmbedBuilder, Colors } = require("discord.js");
 const escapeMarkdown = require("discord.js").escapeMarkdown;
 
 const command = new SlashCommand()
-  .setName("play")
+  .setName("playnext")
   .setDescription(
     "Searches and plays the requested song \nSupports: \nYoutube, Spotify, Deezer, Apple Music"
   )
@@ -91,7 +91,7 @@ const command = new SlashCommand()
       case "SEARCH_RESULT":
       case "search":
       case "track":
-        player.queue.add(res.tracks[0]);
+        player.queue.splice(0, 0, res.tracks[0]);
   
         if (!player.playing && !player.paused && !player.queue.size) {
           player.play();
@@ -101,7 +101,7 @@ const command = new SlashCommand()
         var title = title.replace(/\[/g, "");
         let addQueueEmbed = new EmbedBuilder()
           .setColor(client.config.embedColor)
-          .setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
+          .setAuthor({ name: "Added to next queue", iconURL: client.config.iconURL })
           .setDescription(`[${title}](${res.tracks[0].uri})` || "No Title")
           .setURL(res.tracks[0].uri)
           .setThumbnail(res.tracks[0].displayThumbnail ? res.tracks[0].displayThumbnail("maxresdefault") : res.tracks[0].thumbnail)
@@ -123,19 +123,11 @@ const command = new SlashCommand()
             }
           );
   
-        if (player.queue.totalSize > 1) {
-          addQueueEmbed.addFields({
-            name: "Position in queue",
-            value: `${player.queue.size}`,
-            inline: true,
-          });
-        }
-  
         await interaction.editReply({ embeds: [addQueueEmbed] }).catch(this.warn);
         break;
       case "PLAYLIST_LOADED":
       case "playlist":
-        player.queue.add(res.tracks);
+        player.queue.splice(0, 0, res.tracks);
   
         if (
           !player.playing &&
@@ -148,7 +140,7 @@ const command = new SlashCommand()
         let playlistEmbed = new EmbedBuilder()
           .setColor(client.config.embedColor)
           .setAuthor({
-            name: "Playlist added to queue",
+            name: "Playlist added to next queue",
             iconURL: client.config.iconURL,
           })
           .setThumbnail(res.tracks[0].thumbnail)

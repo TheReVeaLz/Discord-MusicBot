@@ -1,5 +1,5 @@
 const colors = require("colors");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -17,8 +17,8 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
@@ -27,15 +27,15 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("There's nothing playing in the queue"),
 				],
 				ephemeral: true,
 			});
 		}
 		
-		let autoQueueEmbed = new MessageEmbed().setColor(client.config.embedColor);
+		let autoQueueEmbed = new EmbedBuilder().setColor(client.config.embedColor);
 		const autoQueue = player.get("autoQueue");
 		player.set("requester", interaction.guild.members.me);
 		

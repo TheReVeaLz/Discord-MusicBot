@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("skip")
@@ -16,8 +16,8 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
@@ -26,8 +26,8 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("There is nothing to skip."),
 				],
 				ephemeral: true,
@@ -38,18 +38,17 @@ const command = new SlashCommand()
                 if (player.queue[0] == undefined && (!autoQueue || autoQueue === false)) {
 		return interaction.reply({
 			embeds: [
-				new MessageEmbed()
-					.setColor("RED")
+				new EmbedBuilder()
+					.setColor(Colors.Red)
 					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
 			],
 		})}
 		
-		player.queue.previous = player.queue.current;
 		player.stop();
 		
 		interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription("✅ | **Skipped!**"),
 			],

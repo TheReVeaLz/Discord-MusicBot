@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -7,13 +7,13 @@ const command = new SlashCommand()
   .setRun(async (client, interaction, options) => {
     return interaction.reply({
       embeds: [
-        new MessageEmbed()
+        new EmbedBuilder()
           .setColor(client.config.embedColor)
           .setTitle(`Invite me to your server!`),
       ],
       components: [
-        new MessageActionRow().addComponents(
-          new MessageButton()
+        new ActionRowBuilder().addComponents(
+          new ButtonBuilder()
             .setLabel("Invite me")
             .setStyle("LINK")
             .setURL(

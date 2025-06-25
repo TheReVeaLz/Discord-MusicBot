@@ -1,7 +1,7 @@
-const { MessageEmbed } = require("discord.js");
-const escapeMarkdown = require('discord.js').Util.escapeMarkdown;
+const { EmbedBuilder, Colors } = require("discord.js");
+const escapeMarkdown = require('discord.js').escapeMarkdown;
 const SlashCommand = require("../../lib/SlashCommand");
-const prettyMilliseconds = require("pretty-ms");
+const prettyMilliseconds = require("pretty-ms").default;
 
 const command = new SlashCommand()
 	.setName("nowplaying")
@@ -18,8 +18,8 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
@@ -28,8 +28,8 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("The bot isn't in a channel."),
 				],
 				ephemeral: true,
@@ -39,8 +39,8 @@ const command = new SlashCommand()
 		if (!player.playing) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("There's nothing playing."),
 				],
 				ephemeral: true,
@@ -51,7 +51,7 @@ const command = new SlashCommand()
         var title = escapeMarkdown(song.title)
         var title = title.replace(/\]/g,"")
         var title = title.replace(/\[/g,"")
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
 			// show who requested the song via setField, also show the duration of the song

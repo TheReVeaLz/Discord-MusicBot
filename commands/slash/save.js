@@ -1,6 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
-const prettyMilliseconds = require("pretty-ms");
+const { EmbedBuilder, Colors } = require("discord.js");
+const prettyMilliseconds = require("pretty-ms").default;
 
 const command = new SlashCommand()
 	.setName("save")
@@ -17,8 +17,8 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
@@ -27,15 +27,15 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("There is no music playing right now."),
 				],
 				ephemeral: true,
 			});
 		}
 		
-		const sendtoDmEmbed = new MessageEmbed()
+		const sendtoDmEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setAuthor({
 				name: "Saved track",
@@ -68,7 +68,7 @@ const command = new SlashCommand()
 		
 		return interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(
 						"Please check your **DMs**. If you didn't receive any message from me please make sure your **DMs** are open",

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, Colors } = require("discord.js");
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
@@ -21,7 +21,7 @@ module.exports = async (client, interaction) => {
 		return;
 	}
 	if (!interaction.member.voice.channel) {
-		const joinEmbed = new MessageEmbed()
+		const joinEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setDescription(
 				"❌ | **You must be in a voice channel to use this action!**",
@@ -33,7 +33,7 @@ module.exports = async (client, interaction) => {
 		interaction.guild.members.me.voice.channel &&
 		!interaction.guild.members.me.voice.channel.equals(interaction.member.voice.channel)
 	) {
-		const sameEmbed = new MessageEmbed()
+		const sameEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setDescription(
 				"❌ | **You must be in the same voice channel as me to use this action!**",
@@ -75,15 +75,16 @@ module.exports = async (client, interaction) => {
            return interaction.reply({
                         ephemeral: true,
 			embeds: [
-				new MessageEmbed()
-					.setColor("RED")
+				new EmbedBuilder()
+					.setColor(Colors.Red)
 					.setDescription(`There is no previous song played.`),
 			],
 		});
     }
 		if (previousSong !== currentSong && previousSong !== nextSong) {
-			player.queue.splice(0, 0, currentSong)
-			player.play(previousSong);
+			player.queue.previous = undefined;
+			player.queue.splice(0, 0, previousSong, currentSong);
+			player.stop();
 			return interaction.deferUpdate();
 		}
 	}
@@ -93,8 +94,8 @@ module.exports = async (client, interaction) => {
 			const msg = await interaction.channel.send({
                                ephemeral: true,
 				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
+					new EmbedBuilder()
+						.setColor(Colors.Red)
 						.setDescription("There is no song playing right now."),
 				],
 			});
@@ -124,8 +125,8 @@ module.exports = async (client, interaction) => {
 		return interaction.reply({
                         ephemeral: true,
 			embeds: [
-				new MessageEmbed()
-					.setColor("RED")
+				new EmbedBuilder()
+					.setColor(Colors.Red)
 					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
 			],
 		})} else player.stop();
