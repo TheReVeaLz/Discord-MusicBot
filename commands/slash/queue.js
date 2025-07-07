@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle } = require("discord.js");
 const escapeMarkdown = require('discord.js').escapeMarkdown;
 const load = require("lodash");
 const pms = require("pretty-ms").default;
@@ -204,11 +204,11 @@ const command = new SlashCommand()
 					const buttonOne = new ButtonBuilder()
 						.setCustomId("queue_cmd_but_1_app")
 						.setEmoji("⏭️")
-						.setStyle("PRIMARY");
+						.setStyle(ButtonStyle.Primary);
 					const buttonTwo = new ButtonBuilder()
 						.setCustomId("queue_cmd_but_2_app")
 						.setEmoji("⏮️")
-						.setStyle("PRIMARY");
+						.setStyle(ButtonStyle.Primary);
 					
 					await interaction
 						.editReply({

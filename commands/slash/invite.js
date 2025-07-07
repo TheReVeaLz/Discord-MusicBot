@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -15,7 +15,7 @@ const command = new SlashCommand()
         new ActionRowBuilder().addComponents(
           new ButtonBuilder()
             .setLabel("Invite me")
-            .setStyle("LINK")
+            .setStyle(ButtonStyle.Link)
             .setURL(
               `https://discord.com/oauth2/authorize?client_id=${
                 client.config.clientId

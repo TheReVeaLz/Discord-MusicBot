@@ -5,6 +5,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   EmbedBuilder,
+  ButtonStyle
 } = require("discord.js");
 const LoadCommands = require("../../util/loadCommands");
 const { filter } = require("lodash");
@@ -75,12 +76,12 @@ const command = new SlashCommand()
         new ButtonBuilder()
           .setCustomId("help_cmd_but_2_app")
           .setEmoji("◀️")
-          .setStyle("PRIMARY")
+          .setStyle(ButtonStyle.Primary)
           .setDisabled(pageNo == 0),
         new ButtonBuilder()
           .setCustomId("help_cmd_but_1_app")
           .setEmoji("▶️")
-          .setStyle("PRIMARY")
+          .setStyle(ButtonStyle.Primary)
           .setDisabled(pageNo == maxPages - 1)
       );
     };

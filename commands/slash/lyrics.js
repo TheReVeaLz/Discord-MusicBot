@@ -3,6 +3,7 @@ const {
 	ActionRowBuilder,
 	StringSelectMenuBuilder,
 	ButtonBuilder,
+	ButtonStyle,
 	EmbedBuilder,
 	Colors
 } = require("discord.js");
@@ -118,11 +119,11 @@ const command = new SlashCommand()
 										.setCustomId('tipsbutton')
 										.setLabel('Tips')
 										.setEmoji(`📌`)
-										.setStyle('SECONDARY'),
+										.setStyle(ButtonStyle.Secondary),
 									new ButtonBuilder()
 										.setLabel('Source')
 										.setURL(url)
-										.setStyle('LINK'),
+										.setStyle(ButtonStyle.Link),
 								);
 
 							const musixmatch_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Musixmatch_logo_icon_only.svg/480px-Musixmatch_logo_icon_only.svg.png';
@@ -183,7 +184,7 @@ const command = new SlashCommand()
 							.setEmoji(`📌`)
 							.setCustomId('tipsbutton')
 							.setLabel('Tips')
-							.setStyle('SECONDARY'),
+							.setStyle(ButtonStyle.Secondary),
 					);
 				return interaction.editReply({
 					embeds: [

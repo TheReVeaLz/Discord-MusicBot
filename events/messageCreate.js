@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const { get } = require("../util/db");
 const { platform, arch } = require("os");
 
@@ -11,9 +11,9 @@ module.exports = async (client, message) => {
   }&permissions=${client.config.inviteScopes.toString().replace(/,/g, "%20")}`;
 
   const buttons = new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setStyle("LINK").setLabel("Invite me").setURL(invite),
+    new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Invite me").setURL(invite),
     new ButtonBuilder()
-      .setStyle("LINK")
+      .setStyle(ButtonStyle.Link)
       .setLabel("Support server")
       .setURL(`${client.config.supportServer}`)
   );
