@@ -3,6 +3,6 @@
  * @param {import("../lib/DiscordMusicBot")} client
  */
 module.exports = (client) => {
-	client.manager.init(client.user.id);
+	client.manager.init(client.user);
 	client.log("Successfully Logged in as " + client.user.tag);
 };

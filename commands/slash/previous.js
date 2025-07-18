@@ -34,23 +34,23 @@ const command = new SlashCommand()
 		});
 	}
 
-	const previousSong = player.queue.previous;
+	const previousSong = player.queue.previous[0];
 	const currentSong = player.queue.current;
 	const nextSong = player.queue[0]
 
-	if (!previousSong
-		|| previousSong === currentSong
-		|| previousSong === nextSong) {
+	if (!previousSong || previousSong === currentSong || previousSong === nextSong) {
 		return interaction.reply({
 			embeds: [
 				new EmbedBuilder()
 					.setColor(Colors.Red)
 					.setDescription("There is no previous song in the queue."),
 			],
-		})}
+		})
+	}
 
 	if (previousSong !== currentSong && previousSong !== nextSong) {
-		player.queue.splice(0, 0, currentSong)
+		player.queue.add([previousSong, currentSong], 0);
+		player.queue.previous.splice(0, 1);
 		player.play(previousSong);
 	}
 	interaction.reply({

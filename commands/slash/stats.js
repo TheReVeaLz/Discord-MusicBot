@@ -20,17 +20,17 @@ const command = new SlashCommand()
 			.format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
 		// show lavalink uptime in a nice format
 		const lavauptime = moment
-			.duration(client.manager.nodes.values().next().value.stats.uptime)
+			.duration(client.manager.nodeManager.nodes.values().next().value.stats.uptime)
 			.format(" D[d], H[h], m[m]");
 		// show lavalink memory usage in a nice format
 		const lavaram = (
-			client.manager.nodes.values().next().value.stats.memory.used /
+			client.manager.nodeManager.nodes.values().next().value.stats.memory.used /
 			1024 /
 			1024
 		).toFixed(2);
 		// sow lavalink memory alocated in a nice format
 		const lavamemalocated = (
-			client.manager.nodes.values().next().value.stats.memory.allocated /
+			client.manager.nodeManager.nodes.values().next().value.stats.memory.allocated /
 			1024 /
 			1024
 		).toFixed(2);
@@ -61,9 +61,9 @@ const command = new SlashCommand()
 				{
 					name: `Lavalink stats`,
 					value: `\`\`\`yml\nUptime: ${ lavauptime }\nRAM: ${ lavaram } MB\nPlaying: ${
-						client.manager.nodes.values().next().value.stats.playingPlayers
+						client.manager.nodeManager.nodes.values().next().value.stats.playingPlayers
 					} out of ${
-						client.manager.nodes.values().next().value.stats.players
+						client.manager.nodeManager.nodes.values().next().value.stats.players
 					}\`\`\``,
 					inline: true,
 				},

@@ -57,7 +57,7 @@ const command = new SlashCommand()
 			}
 			
 			player.queue.remove(0, position - 1);
-			player.stop();
+			player.skip();
 			
 			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
@@ -66,7 +66,7 @@ const command = new SlashCommand()
 			return interaction.editReply({ embeds: [thing] });
 		} catch {
 			if (position === 1) {
-				player.stop();
+				player.skip();
 			}
 			return interaction.editReply({
 				embeds: [

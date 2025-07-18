@@ -10,12 +10,10 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	let guildId = newState.guild.id;
-	const player = client.manager.get(guildId);
+	const player = client.manager.players.get(guildId);
 	
 	// check if the bot is active (playing, paused or empty does not matter (return otherwise)
-	if (!player || player.state !== "CONNECTED") {
-		return;
-	}
+	if (!player || player.state !== "CONNECTED") return;
 	
 	// prepreoces the data
 	const stateChange = {};
@@ -72,7 +70,7 @@ module.exports = async (client, oldState, newState) => {
 	switch (stateChange.type) {
 		case "JOIN":
 			if (player.get("autoPause") === true) {
-                         var members = stateChange.channel.members.filter(member => !member.user.bot).size
+                    const members = stateChange.channel.members.filter(member => !member.user.bot).size
 		            if (members === 1 && player.paused && members !== player.prevMembers){
 					player.pause(false);
 					let playerResumed = new EmbedBuilder()
@@ -97,7 +95,7 @@ module.exports = async (client, oldState, newState) => {
 				}
 			}
 			break;
-                case "LEAVE":
+		case "LEAVE":
 			var members = stateChange.channel.members.filter(member => !member.user.bot).size
 			const twentyFourSeven = player.get("twentyFourSeven");
 			if (player.get("autoPause") === true && player.get("autoLeave") === false) {
@@ -116,7 +114,7 @@ module.exports = async (client, oldState, newState) => {
 						.send({ embeds: [playerPaused] });
 					player.setPausedMessage(client, pausedMessage);
 				}
-			}else if (player.get("autoLeave") === true && player.get("autoPause") === false) {
+			} else if (player.get("autoLeave") === true && player.get("autoPause") === false) {
 				if (members === 0) {
 					if (twentyFourSeven){
 						setTimeout(async () => {
@@ -139,7 +137,7 @@ module.exports = async (client, oldState, newState) => {
 								player.set("autoQueue", false);
 							}
 						}, client.config.disconnectTime);
-					} else{
+					} else {
 						let leftEmbed = new EmbedBuilder()
 							.setColor(client.config.embedColor)
 							.setAuthor({
@@ -156,7 +154,7 @@ module.exports = async (client, oldState, newState) => {
 					}
 					
 				}
-			}else if (player.get("autoLeave") === true && player.get("autoPause") === true){
+			} else if (player.get("autoLeave") === true && player.get("autoPause") === true){
 				if (members === 0 && !player.paused && player.playing && twentyFourSeven) {
 					player.pause(true);
 					
@@ -192,7 +190,7 @@ module.exports = async (client, oldState, newState) => {
 							player.set("autoQueue", false);
 						}
 					}, client.config.disconnectTime);
-				}else{
+				} else {
 					if (members === 0 && player.state !== 'DISCONNECTED'){
 						let leftEmbed = new EmbedBuilder()
 						.setColor(client.config.embedColor)
@@ -210,6 +208,6 @@ module.exports = async (client, oldState, newState) => {
 					}
 				}
 			}
-		break;
+			break;
 	}
 };
