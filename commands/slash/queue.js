@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, Colors, ButtonStyle, ApplicationIntegrationType } = require("discord.js");
 const escapeMarkdown = require('discord.js').escapeMarkdown;
 const load = require("lodash");
 const pms = require("pretty-ms").default;
@@ -8,6 +8,7 @@ const command = new SlashCommand()
 	.setName("queue")
 	.setDescription("Shows the current queue")
 	
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		try {
 			

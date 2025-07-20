@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 const escapeMarkdown = require("discord.js").escapeMarkdown;
 
 const command = new SlashCommand()
@@ -14,7 +14,8 @@ const command = new SlashCommand()
       .setAutocomplete(true)
       .setRequired(true)
   )
-  .setRun(async (client, interaction, options) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction, options) => {
     try {
       let channel = await client.getChannel(client, interaction);
       if (!channel) {

@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("volume")
@@ -10,6 +10,7 @@ const command = new SlashCommand()
 			.setDescription("Amount of volume you want to change. Ex: 10")
 			.setRequired(false),
 	)
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {

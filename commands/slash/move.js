@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("move")
@@ -17,6 +17,7 @@ const command = new SlashCommand()
 			.setRequired(true),
 	)
 	
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction) => {
 		const from = interaction.options.getInteger("from");
 		const to = interaction.options.getInteger("to");

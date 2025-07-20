@@ -5,7 +5,8 @@ const {
 	ButtonBuilder,
 	ButtonStyle,
 	EmbedBuilder,
-	Colors
+	Colors,
+	ApplicationIntegrationType
 } = require("discord.js");
 const { Rlyrics } = require("rlyrics");
 const lyricsApi = new Rlyrics();
@@ -19,6 +20,7 @@ const command = new SlashCommand()
 			.setDescription("The song to get lyrics for")
 			.setRequired(false),
 	)
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		await interaction.reply({
 			embeds: [

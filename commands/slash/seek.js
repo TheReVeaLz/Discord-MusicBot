@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 const ms = require("ms");
 
 const command = new SlashCommand()
@@ -11,6 +11,7 @@ const command = new SlashCommand()
 			.setDescription("Seek to time you want. Ex 1h 30m | 2h | 80m | 53s")
 			.setRequired(true),
 	)
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {

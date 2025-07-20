@@ -1,10 +1,11 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("stop")
 	.setDescription("Stops whatever the bot is playing and leaves the voice channel\n(This command will clear the queue)")
 	
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {

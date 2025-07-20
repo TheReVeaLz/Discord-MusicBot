@@ -1,4 +1,4 @@
-const { EmbedBuilder, message } = require("discord.js");
+const { EmbedBuilder, message, ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const fs = require("fs");
 const path = require("path");
@@ -6,6 +6,7 @@ const path = require("path");
 const command = new SlashCommand()
 	.setName("reload")
 	.setDescription("Reload all commands")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		if (interaction.user.id === client.config.adminId) {
 			try {

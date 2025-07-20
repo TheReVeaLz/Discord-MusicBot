@@ -1,9 +1,10 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("skip")
 	.setDescription("Skip the current song")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		try {
 			let channel = await client.getChannel(client, interaction);

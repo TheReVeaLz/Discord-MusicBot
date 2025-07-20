@@ -1,3 +1,4 @@
+const { ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -10,6 +11,7 @@ const command = new SlashCommand()
 			.setMinValue(2).setMaxValue(100)
 			.setRequired(false),
 	)
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		
 		await interaction.deferReply();

@@ -5,7 +5,8 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   EmbedBuilder,
-  ButtonStyle
+  ButtonStyle,
+  ApplicationIntegrationType
 } = require("discord.js");
 const LoadCommands = require("../../util/loadCommands");
 const { filter } = require("lodash");
@@ -13,7 +14,8 @@ const { filter } = require("lodash");
 const command = new SlashCommand()
   .setName("help")
   .setDescription("Shows this list")
-  .setRun(async (client, interaction) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction) => {
     await interaction.deferReply().catch((_) => {});
     // map the commands name and description to the embed
     const commands = await LoadCommands().then((cmds) => {

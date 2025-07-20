@@ -4,7 +4,8 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   StringSelectMenuBuilder,
-  Colors
+  Colors,
+  ApplicationIntegrationType
 } = require("discord.js");
 
 const command = new SlashCommand()
@@ -16,7 +17,8 @@ const command = new SlashCommand()
       .setDescription("The song to search for")
       .setRequired(true)
   )
-  .setRun(async (client, interaction, options) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) {
       return;

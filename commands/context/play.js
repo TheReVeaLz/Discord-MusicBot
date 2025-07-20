@@ -1,9 +1,12 @@
 const { ContextMenuCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 const escapeMarkdown = require("discord.js").escapeMarkdown;
 
 module.exports = {
-  command: new ContextMenuCommandBuilder().setName("Play Song").setType(3),
+  command: new ContextMenuCommandBuilder()
+  .setName("Play Song")
+  .setType(3)
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall]),
 
   /**
    * This function will handle context menu interaction

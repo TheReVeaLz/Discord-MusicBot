@@ -4,6 +4,7 @@ dbList.json
 .guild_dbs/
 dev-config.js
 config.js
+ecosystem.config.js
 
 # Logs
 logs

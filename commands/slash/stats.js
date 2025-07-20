@@ -1,12 +1,13 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const moment = require("moment");
 require("moment-duration-format");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ApplicationIntegrationType } = require("discord.js");
 const os = require("os");
 
 const command = new SlashCommand()
 	.setName("stats")
 	.setDescription("Get information about the bot")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction) => {
 		// get OS info
 		const osver = os.platform() + " " + os.release();

@@ -1,9 +1,10 @@
+const { EmbedBuilder, ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("summon")
 	.setDescription("Summons the bot to the channel.")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!interaction.member.voice.channel) {

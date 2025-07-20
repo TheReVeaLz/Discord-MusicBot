@@ -1,10 +1,11 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 const prettyMilliseconds = require("pretty-ms").default;
 
 const command = new SlashCommand()
 	.setName("save")
 	.setDescription("Saves current song to your DM's")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {

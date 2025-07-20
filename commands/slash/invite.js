@@ -1,10 +1,11 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("invite")
   .setDescription("Invite me to your server")
-  .setRun(async (client, interaction, options) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction, options) => {
     return interaction.reply({
       embeds: [
         new EmbedBuilder()

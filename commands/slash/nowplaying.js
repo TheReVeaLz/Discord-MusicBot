@@ -1,4 +1,4 @@
-const { EmbedBuilder, Colors } = require("discord.js");
+const { EmbedBuilder, Colors, ApplicationIntegrationType } = require("discord.js");
 const escapeMarkdown = require('discord.js').escapeMarkdown;
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms").default;
@@ -6,6 +6,7 @@ const prettyMilliseconds = require("pretty-ms").default;
 const command = new SlashCommand()
 	.setName("nowplaying")
 	.setDescription("Shows the song currently playing in the voice channel.")
+	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {

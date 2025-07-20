@@ -1,4 +1,5 @@
 const { EmbedBuilder, message } = require("discord.js");
+const { ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const fs = require("fs");
 const path = require("path");
@@ -13,7 +14,8 @@ const command = new SlashCommand()
       .setDescription("Enter the guild id to leave (type `list` for guild ids)")
       .setRequired(true)
   )
-  .setRun(async (client, interaction, options) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction, options) => {
 		if (interaction.user.id === client.config.adminId) {
 		    try{
 			const id = interaction.options.getString('id');

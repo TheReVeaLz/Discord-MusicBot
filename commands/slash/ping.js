@@ -1,10 +1,11 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ApplicationIntegrationType } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("ping")
   .setDescription("View the bot's latency")
-  .setRun(async (client, interaction, options) => {
+  .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+	.setRun(async (client, interaction, options) => {
     let msg = await interaction.channel.send({
       embeds: [
         new EmbedBuilder()
