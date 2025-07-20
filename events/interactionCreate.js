@@ -8,8 +8,7 @@ const yt = require("youtube-sr").default;
  */
 module.exports = async (client, interaction) => {
     try {
-
-        if (interaction.isCommand()) {
+        if (interaction.isChatInputCommand()) {
             let command = client.slashCommands.find(
                 (x) => x.name == interaction.commandName,
             );
