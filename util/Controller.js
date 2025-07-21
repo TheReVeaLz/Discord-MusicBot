@@ -60,7 +60,7 @@ module.exports = async (client, interaction) => {
 			}, 5000);
 	
 			interaction.update({
-				components: [client.createController(player.options.guild, player)],
+				components: [client.createController(player.options.guildId, player)],
 			});
 			return;
 		}
@@ -104,15 +104,11 @@ module.exports = async (client, interaction) => {
 				}, 5000);
 				return interaction.deferUpdate();
 			} else {
-				if (player.paused) {
-					player.pause(false);
-				} else {
-					player.pause(true);
-				}
-				client.warn(`Player: ${ player.options.guild } | Successfully ${ player.paused? "paused" : "resumed" } the player`);
+				player.paused ? player.resume() : player.pause();
+				client.warn(`Player: ${ player.options.guildId } | Successfully ${ player.paused ? "paused" : "resumed" } the player`);
 	
 				return interaction.update({
-					components: [client.createController(player.options.guild, player)],
+					components: [client.createController(player.options.guildId, player)],
 				});
 			}
 		}
@@ -135,18 +131,13 @@ module.exports = async (client, interaction) => {
 		}
 	
 		if (property === "Loop") {
-			if (player.trackRepeat) {
-				player.setTrackRepeat(false);
-				player.setQueueRepeat(true);
-			} else if (player.queueRepeat) {
-				player.setQueueRepeat(false);
-			} else {
-				player.setTrackRepeat(true);
-			}
-			client.warn(`Player: ${player.options.guild} | Successfully toggled loop ${player.trackRepeat ? "on" : player.queueRepeat ? "queue on" : "off"} the player`);
+			const repeatMode = player.repeatMode === "track" ? "queue" : player.queueRepeat ? "off" : "track";
+			player.setRepeatMode(repeatMode);
+			const loopStatus = player.repeatMode === "track" ? "on" : player.repeatMode === "queue" ? "queue on" : "off";
+			client.warn(`Player: ${player.options.guildId} | Successfully toggled loop ${loopStatus} the player`);
 	
 			interaction.update({
-				components: [client.createController(player.options.guild, player)],
+				components: [client.createController(player.options.guildId, player)],
 			});
 			return;
 		}

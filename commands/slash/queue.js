@@ -11,8 +11,7 @@ const command = new SlashCommand()
 	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
 		try {
-			
-			let channel = await client.getChannel(client, interaction);
+			const channel = await client.getChannel(client, interaction);
 			if (!channel) {
 				return;
 			}
@@ -52,9 +51,9 @@ const command = new SlashCommand()
 			});
 			
 			
-			if (!player.queue.size || player.queue.size === 0) {
+			if (!player.queue.tracks.length || player.queue.tracks.length === 0) {
 				let song = player.queue.current;
-				var title = escapeMarkdown(song.title)
+				var title = escapeMarkdown(song.info.title)
 				var title = title.replace(/\]/g,"")
 				var title = title.replace(/\[/g,"")
 				const queueEmbed = new EmbedBuilder()
@@ -63,7 +62,7 @@ const command = new SlashCommand()
 					.addFields(
 						{
 							name: "Duration",
-							value: song.isStream
+							value: song.info.isStream
 								? `\`LIVE\``
 								: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
 									player.queue.current.duration,
@@ -78,7 +77,7 @@ const command = new SlashCommand()
 						},
 						{
 							name: "Total Tracks",
-							value: `\`${ player.queue.totalSize - 1 }\``,
+							value: `\`${ player.queue.tracks.length }\``,
 							colonNotation: true,
 							inline: true,
 						},
@@ -88,18 +87,13 @@ const command = new SlashCommand()
 					embeds: [queueEmbed],
 				});
 			} else {
-				let queueDuration = player.queue.duration.valueOf()
-				if (player.queue.current.isStream) {
-					queueDuration -= player.queue.current.duration
-				}
-				for (let i = 0; i < player.queue.length; i++) {
-					if (player.queue[i].isStream) {
-						queueDuration -= player.queue[i].duration
-					}
+				let queueDuration = player.queue.utils.totalDuration()
+				if (player.queue.current.info.isStream) {
+					queueDuration -= player.queue.current.info.duration
 				}
 				
-				const mapping = player.queue.map(
-					(t, i) => `\` ${ ++i } \` [${ t.title }](${ t.uri }) [${ t.requester }]`,
+				const mapping = player.queue.tracks.map(
+					(t, i) => `\` ${ ++i } \` [${ t.info.title }](${ t.info.uri }) [${ t.requester }]`,
 				);
 				
 				const chunk = load.chunk(mapping, 10);
@@ -118,23 +112,23 @@ const command = new SlashCommand()
 					page = 0;
 				}
 				
-				if (player.queue.size < 11 || player.queue.totalSize < 11) {
+				if (player.queue.tracks.length < 11) {
 					let song = player.queue.current;
-					var title = escapeMarkdown(song.title)
+					var title = escapeMarkdown(song.info.title)
 					var title = title.replace(/\]/g,"")
 					var title = title.replace(/\[/g,"")
 					const embedTwo = new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription(
-							`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+							`**♪ | Now playing:** [${ title }](${ song.info.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 						)
 						.addFields(
 							{
 								name: "Track Duration",
-								value: song.isStream
+								value: song.info.isStream
 									? `\`LIVE\``
 									: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-										player.queue.current.duration,
+										player.queue.current.info.duration,
 										{ colonNotation: true },
 									) }\``,
 								inline: true,
@@ -148,7 +142,7 @@ const command = new SlashCommand()
 							},
 							{
 								name: "Total Tracks",
-								value: `\`${ player.queue.totalSize - 1 }\``,
+								value: `\`${ player.queue.tracks.length }\``,
 								colonNotation: true,
 								inline: true,
 							},
@@ -165,21 +159,21 @@ const command = new SlashCommand()
 						});
 				} else {
 					let song = player.queue.current;
-					var title = escapeMarkdown(song.title)
+					var title = escapeMarkdown(song.info.title)
 					var title = title.replace(/\]/g,"")
 					var title = title.replace(/\[/g,"")
 					const embedThree = new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription(
-							`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+							`**♪ | Now playing:** [${ title }](${ song.info.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 						)
 						.addFields(
 							{
 								name: "Track Duration",
-								value: song.isStream
+								value: song.info.isStream
 									? `\`LIVE\``
 									: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-										player.queue.current.duration,
+										player.queue.current.info.duration,
 										{ colonNotation: true },
 									) }\``,
 								inline: true,
@@ -193,7 +187,7 @@ const command = new SlashCommand()
 							},
 							{
 								name: "Total Tracks",
-								value: `\`${ player.queue.totalSize - 1 }\``,
+								value: `\`${ player.queue.tracks.length }\``,
 								colonNotation: true,
 								inline: true,
 							},
@@ -245,21 +239,21 @@ const command = new SlashCommand()
 							});
 							page = page + 1 < pages.length? ++page : 0;
 							let song = player.queue.current;
-							var title = escapeMarkdown(song.title)
+							var title = escapeMarkdown(song.info.title)
 							var title = title.replace(/\]/g,"")
 							var title = title.replace(/\[/g,"")
 							const embedFour = new EmbedBuilder()
 								.setColor(client.config.embedColor)
 								.setDescription(
-									`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+									`**♪ | Now playing:** [${ title }](${ song.info.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 								)
 								.addFields(
 									{
 										name: "Track Duration",
-										value: song.isStream
+										value: song.info.isStream
 											? `\`LIVE\``
 											: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-												player.queue.current.duration,
+												player.queue.current.info.duration,
 												{ colonNotation: true },
 											) }\``,
 										inline: true,
@@ -273,7 +267,7 @@ const command = new SlashCommand()
 									},
 									{
 										name: "Total Tracks",
-										value: `\`${ player.queue.totalSize - 1 }\``,
+										value: `\`${ player.queue.tracks.length }\``,
 										colonNotation: true,
 										inline: true,
 									},
@@ -293,21 +287,21 @@ const command = new SlashCommand()
 							});
 							page = page > 0? --page : pages.length - 1;
 							let song = player.queue.current;
-							var title = escapeMarkdown(song.title)
+							var title = escapeMarkdown(song.info.title)
 							var title = title.replace(/\]/g,"")
 							var title = title.replace(/\[/g,"")
 							const embedFive = new EmbedBuilder()
 								.setColor(client.config.embedColor)
 								.setDescription(
-									`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+									`**♪ | Now playing:** [${ title }](${ song.info.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 								)
 								.addFields(
 									{
 										name: "Track Duration",
-										value: song.isStream
+										value: song.info.isStream
 											? `\`LIVE\``
 											: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-												player.queue.current.duration,
+												player.queue.current.info.duration,
 												{ colonNotation: true },
 											) }\``,
 										inline: true,
@@ -321,7 +315,7 @@ const command = new SlashCommand()
 									},
 									{
 										name: "Total Tracks",
-										value: `\`${ player.queue.totalSize - 1 }\``,
+										value: `\`${ player.queue.tracks.length }\``,
 										colonNotation: true,
 										inline: true,
 									},
@@ -346,7 +340,7 @@ const command = new SlashCommand()
 				}
 			}
 		} catch (err) {
-			this.error(err);
+			client.error(err);
 		}
 	});
 

@@ -49,7 +49,7 @@ const command = new SlashCommand()
 		}
 		
 		const song = player.queue.current;
-        var title = escapeMarkdown(song.title)
+        var title = escapeMarkdown(song.info.title)
         var title = title.replace(/\]/g,"")
         var title = title.replace(/\[/g,"")
 		const embed = new EmbedBuilder()
@@ -65,20 +65,20 @@ const command = new SlashCommand()
 				// show duration, if live show live
 				{
 					name: "Duration",
-					value: song.isStream
+					value: song.info.isStream
 						? `\`LIVE\``
 						: `\`${ prettyMilliseconds(player.position, {
 							secondsDecimalDigits: 0,
-						}) } / ${ prettyMilliseconds(song.duration, {
+						}) } / ${ prettyMilliseconds(song.info.duration, {
 							secondsDecimalDigits: 0,
 						}) }\``,
 					inline: true,
 				},
 			])
-			// show the thumbnail of the song using displayThumbnail("maxresdefault")
-			.setThumbnail(song.displayThumbnail("maxresdefault"))
+			// show the thumbnail of the song
+			.setThumbnail(song.info.artworkUrl)
 			// show the title of the song and link to it
-			.setDescription(`[${ title }](${ song.uri })`);
+			.setDescription(`[${ title }](${ song.info.uri })`);
 		return interaction.reply({ embeds: [embed] });
 	});
 module.exports = command;

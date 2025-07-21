@@ -47,11 +47,11 @@ const command = new SlashCommand()
 		await interaction.deferReply();
 		
 		const position = Number(args) - 1;
-		if (position > player.queue.size) {
+		if (position > player.queue.tracks.length) {
 			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription(
-					`Current queue has only **${ player.queue.size }** track`,
+					`Current queue has only **${player.queue.tracks.length}** track`,
 				);
 			return interaction.editReply({ embeds: [thing] });
 		}
@@ -62,7 +62,7 @@ const command = new SlashCommand()
 		const number = position + 1;
 		let removeEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
-			.setDescription(`Removed track number **${ number }** from queue`);
+			.setDescription(`Removed track number **${number}. ${song.info.title}** from queue`);
 		return interaction.editReply({ embeds: [removeEmbed] });
 	});
 

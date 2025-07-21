@@ -63,7 +63,7 @@ const command = new SlashCommand()
 			}`,
 		);
 		
-		if (!player.playing && player.queue.totalSize === 0 && twentyFourSeven) {
+		if (!player.playing && player.queue.tracks.length === 0 && twentyFourSeven) {
 			player.destroy();
 		}
 		

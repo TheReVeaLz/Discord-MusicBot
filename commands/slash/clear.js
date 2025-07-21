@@ -35,7 +35,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		if (!player.queue || !player.queue.length || player.queue.length === 0) {
+		if (!player.queue || !player.queue.tracks.length || player.queue.tracks.length === 0) {
 			let cembed = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription("❌ | **Invalid, Not enough track to be cleared.**");

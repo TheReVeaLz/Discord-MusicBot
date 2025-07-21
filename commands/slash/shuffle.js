@@ -35,7 +35,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		if (!player.queue || !player.queue.length || player.queue.length === 0) {
+		if (!player.queue || !player.queue.tracks.length || player.queue.tracks.length === 0) {
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()

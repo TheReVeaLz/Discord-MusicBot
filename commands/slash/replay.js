@@ -44,7 +44,7 @@ const command = new SlashCommand()
 			embeds: [
 				new EmbedBuilder()
 					.setColor(client.config.embedColor)
-					.setDescription(`Replay [${ song.title }](${ song.uri })`),
+					.setDescription(`Replay [${ song.info.title }](${ song.info.uri })`),
 			],
 		});
 	});

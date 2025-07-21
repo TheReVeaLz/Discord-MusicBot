@@ -19,34 +19,32 @@ const command = new SlashCommand()
   )
   .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction, options) => {
-    let channel = await client.getChannel(client, interaction);
-    if (!channel) {
-      return;
-    }
-
-    let player;
-    if (client.manager) {
-      player = client.createPlayer(interaction.channel, channel);
-    } else {
-      return interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(Colors.Red)
-            .setDescription("Lavalink node is not connected"),
-        ],
-      });
-    }
-    await interaction.deferReply().catch((_) => {});
-
-    if (player.state !== "CONNECTED") {
-      player.connect();
-    }
-
-    const search = interaction.options.getString("query");
-    let res;
-
     try {
-      res = await player.search(search, interaction.user);
+      const channel = await client.getChannel(client, interaction);
+      if (!channel) {
+        return;
+      }
+
+      let player;
+      if (client.manager) {
+        player = client.createPlayer(interaction.channel, channel);
+      } else {
+        return interaction.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor(Colors.Red)
+              .setDescription("Lavalink node is not connected"),
+          ],
+        });
+      }
+      await interaction.deferReply().catch((_) => {});
+
+      if (player.state !== "CONNECTED") {
+        player.connect();
+      }
+
+      const search = interaction.options.getString("query");
+      const res = await player.search(search, interaction.user);
       switch (res.loadType) {
         case "LOAD_FAILED":
         case "error":
@@ -83,13 +81,13 @@ const command = new SlashCommand()
     
           res.tracks.slice(0, max).map((track) => {
             resultFromSearch.push({
-              label: `${track.title}`,
-              value: `${track.uri}`,
-              description: track.isStream
+              label: `${track.info.title}`,
+              value: `${track.info.uri}`,
+              description: track.info.isStream
                 ? `LIVE`
-                : `${prettyMilliseconds(track.duration, {
+                : `${prettyMilliseconds(track.info.duration, {
                     secondsDecimalDigits: 0,
-                  })} - ${track.author}`,
+                  })} - ${track.info.author}`,
             });
           });
     
@@ -120,12 +118,7 @@ const command = new SlashCommand()
             if (i.isStringSelectMenu()) {
               await i.deferUpdate();
               let uriFromCollector = i.values[0];
-              let selectedTrack = res.tracks.find(track => track.uri === uriFromCollector);
-    
-              // trackForPlay = await player?.search(
-              //   uriFromCollector,
-              //   interaction.user
-              // );
+              let selectedTrack = res.tracks.find(track => track.info.uri === uriFromCollector);
               player?.queue?.add(selectedTrack);
               if (!player?.playing && !player?.paused && !player?.queue?.size) {
                 player?.play();
@@ -138,10 +131,10 @@ const command = new SlashCommand()
                       name: "Added to queue",
                       iconURL: client.config.iconURL,
                     })
-                    .setURL(selectedTrack.uri)
-                    .setThumbnail(selectedTrack.displayThumbnail ? selectedTrack.displayThumbnail("maxresdefault") : selectedTrack.thumbnail)
+                    .setURL(selectedTrack.info.uri)
+                    .setThumbnail(selectedTrack.info.artworkUrl)
                     .setDescription(
-                      `[${selectedTrack?.title}](${selectedTrack?.uri})` ||
+                      `[${selectedTrack?.info.title}](${selectedTrack?.info.uri})` ||
                         "No Title"
                     )
                     .addFields(
@@ -152,9 +145,9 @@ const command = new SlashCommand()
                       },
                       {
                         name: "Duration",
-                        value: selectedTrack.isStream
+                        value: selectedTrack.info.isStream
                           ? `\`LIVE :red_circle:\``
-                          : `\`${client.ms(selectedTrack.duration, {
+                          : `\`${client.ms(selectedTrack.info.duration, {
                               colonNotation: true,
                             })}\``,
                         inline: true,

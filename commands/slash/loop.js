@@ -35,10 +35,8 @@ const command = new SlashCommand()
 			});
 		}
 		
-		if (player.setTrackRepeat(!player.trackRepeat)) {
-			;
-		}
-		const trackRepeat = player.trackRepeat? "enabled" : "disabled";
+		player.setRepeatMode("track")
+		const trackRepeat = player.repeatMode === "track" ? "enabled" : "disabled";
 		
 		interaction.reply({
 			embeds: [
