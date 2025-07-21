@@ -95,7 +95,7 @@ const command = new SlashCommand()
         case "track":
           player.queue.add(res.tracks[0]);
     
-          if (!player.playing && !player.paused && !player.queue.size) {
+          if (!player.playing && !player.paused && player.queue.tracks.length === 1) {
             player.play();
           }
           var title = escapeMarkdown(res.tracks[0].info.title);
@@ -125,10 +125,10 @@ const command = new SlashCommand()
               }
             );
     
-          if (player.queue.totalSize > 1) {
+          if (player.queue.tracks.length > 1) {
             addQueueEmbed.addFields({
               name: "Position in queue",
-              value: `${player.queue.size}`,
+              value: `${player.queue.tracks.length}`,
               inline: true,
             });
           }

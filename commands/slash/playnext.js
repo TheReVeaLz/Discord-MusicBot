@@ -92,20 +92,20 @@ const command = new SlashCommand()
       case "SEARCH_RESULT":
       case "search":
       case "track":
-        player.queue.splice(0, 0, res.tracks[0]);
-  
-        if (!player.playing && !player.paused && !player.queue.size) {
+        player.queue.add(res.tracks[0], 0);
+
+        if (!player.playing && !player.paused && player.queue.tracks.length === 1) {
           player.play();
         }
-        var title = escapeMarkdown(res.tracks[0].title);
+        var title = escapeMarkdown(res.tracks[0].info.title);
         var title = title.replace(/\]/g, "");
         var title = title.replace(/\[/g, "");
         let addQueueEmbed = new EmbedBuilder()
           .setColor(client.config.embedColor)
           .setAuthor({ name: "Added to next queue", iconURL: client.config.iconURL })
-          .setDescription(`[${title}](${res.tracks[0].uri})` || "No Title")
-          .setURL(res.tracks[0].uri)
-          .setThumbnail(res.tracks[0].displayThumbnail ? res.tracks[0].displayThumbnail("maxresdefault") : res.tracks[0].thumbnail)
+          .setDescription(`[${title}](${res.tracks[0].info.uri})` || "No Title")
+          .setURL(res.tracks[0].info.uri)
+          .setThumbnail(res.tracks[0].info.displayThumbnail ? res.tracks[0].info.displayThumbnail("maxresdefault") : res.tracks[0].info.artworkUrl)
           .addFields(
             {
               name: "Added by",
@@ -114,9 +114,9 @@ const command = new SlashCommand()
             },
             {
               name: "Duration",
-              value: res.tracks[0].isStream
+              value: res.tracks[0].info.isStream
                 ? `\`LIVE 🔴 \``
-                : `\`${client.ms(res.tracks[0].duration, {
+                : `\`${client.ms(res.tracks[0].info.duration, {
                     colonNotation: true,
                     secondsDecimalDigits: 0,
                   })}\``,
@@ -128,12 +128,12 @@ const command = new SlashCommand()
         break;
       case "PLAYLIST_LOADED":
       case "playlist":
-        player.queue.splice(0, 0, res.tracks);
+        player.queue.add(res.tracks, 0);
   
         if (
           !player.playing &&
           !player.paused &&
-          player.queue.totalSize === res.tracks.length
+          player.queue.tracks.length === res.tracks.length
         ) {
           player.play();
         }
@@ -144,7 +144,7 @@ const command = new SlashCommand()
             name: "Playlist added to next queue",
             iconURL: client.config.iconURL,
           })
-          .setThumbnail(res.tracks[0].thumbnail)
+          .setThumbnail(res.tracks[0].info.artworkUrl)
           .setDescription(`[${res.playlist.name}](${query})`)
           .addFields(
             {
