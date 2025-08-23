@@ -115,19 +115,21 @@ module.exports = async (client, interaction) => {
 	
 		if (property === "Next") {
 			const song = player.queue.current;
-			const autoQueue = player.get("autoQueue");
-			if (player.queue.tracks[0] == undefined && (!autoQueue || autoQueue === false)) {
-				return interaction.reply({
-					ephemeral: true,
-					embeds: [
-						new EmbedBuilder()
-							.setColor(Colors.Red)
-							.setDescription(`There is nothing after [${ song.info.title }](${ song.info.uri }) in the queue.`),
-					],
-				})}
-			else player.skip();
+			if (!player.queue.tracks.length) {
+				player.stopPlaying();
+			} else {
+				player.skip();
+			}
+			
+			interaction.channel.send({
+				embeds: [
+					new EmbedBuilder()
+						.setColor(client.config.embedColor)
+						.setDescription(`Skipped [**${ song.info.title }**](${ song.info.uri })`),
+				],
+			});
 
-			return interaction.deferUpdate
+			return interaction.deferUpdate();
 		}
 	
 		if (property === "Loop") {
