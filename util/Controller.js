@@ -133,10 +133,9 @@ module.exports = async (client, interaction) => {
 		}
 	
 		if (property === "Loop") {
-			const repeatMode = player.repeatMode === "track" ? "queue" : player.queueRepeat ? "off" : "track";
+			const repeatMode = player.repeatMode === "track" ? "queue" : player.repeatMode === "queue" ? "off" : "track";
 			player.setRepeatMode(repeatMode);
-			const loopStatus = player.repeatMode === "track" ? "on" : player.repeatMode === "queue" ? "queue on" : "off";
-			client.warn(`Player: ${player.options.guildId} | Successfully toggled loop ${loopStatus} the player`);
+			client.warn(`Player: ${player.options.guildId} | Successfully toggled loop ${player.repeatMode} the player`);
 	
 			interaction.update({
 				components: [client.createController(player.options.guildId, player)],
