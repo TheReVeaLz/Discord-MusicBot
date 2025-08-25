@@ -52,13 +52,13 @@ const command = new SlashCommand()
 		    text: `The bot will ${!twentyFourSeven ? "now" : "no longer"} stay connected to the voice channel 24/7.`
       });
 		client.warn(
-			`Player: ${ player.options.guild } | [${ colors.blue(
+			`Player: ${ player.options.guildId } | [${ colors.blue(
 				"24/7",
 			) }] has been [${ colors.blue(
 				!twentyFourSeven? "ENABLED" : "DISABLED",
 			) }] in ${
-				client.guilds.cache.get(player.options.guild)
-					? client.guilds.cache.get(player.options.guild).name
+				client.guilds.cache.get(player.options.guildId)
+					? client.guilds.cache.get(player.options.guildId).name
 					: "a guild"
 			}`,
 		);
