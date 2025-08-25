@@ -58,14 +58,14 @@ const command = new SlashCommand()
 				var title = title.replace(/\[/g,"")
 				const queueEmbed = new EmbedBuilder()
 					.setColor(client.config.embedColor)
-					.setDescription(`**♪ | Now playing:** [${ title }](${ song.uri })`)
+					.setDescription(`**♪ | Now playing:** [${ title }](${ song.info.uri })`)
 					.addFields(
 						{
 							name: "Duration",
 							value: song.info.isStream
 								? `\`LIVE\``
 								: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-									player.queue.current.duration,
+									player.queue.current.info.duration,
 									{ colonNotation: true },
 								) }\``,
 							inline: true,
