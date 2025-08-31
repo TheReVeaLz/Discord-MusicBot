@@ -13,7 +13,7 @@ const command = new SlashCommand()
 	
 	.setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
 	.setRun(async (client, interaction) => {
-		const args = interaction.options.getNumber("number");
+		const number = interaction.options.getNumber("number");
 		
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
@@ -46,23 +46,22 @@ const command = new SlashCommand()
 		
 		await interaction.deferReply();
 		
-		const position = Number(args) - 1;
+		const position = Number(number) - 1;
 		if (position > player.queue.tracks.length) {
 			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription(
-					`Current queue has only **${player.queue.tracks.length}** track`,
+					`Queue only has **${player.queue.tracks.length}** track`,
 				);
 			return interaction.editReply({ embeds: [thing] });
 		}
 		
-		const song = player.queue[position];
+		const song = player.queue.tracks[position];
 		player.queue.remove(position);
 		
-		const number = position + 1;
 		let removeEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
-			.setDescription(`Removed track number **${number}. ${song.info.title}** from queue`);
+			.setDescription(`Removed [**${ song.info.title }**](${ song.info.uri }) from queue`);
 		return interaction.editReply({ embeds: [removeEmbed] });
 	});
 
