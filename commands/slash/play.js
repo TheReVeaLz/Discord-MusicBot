@@ -125,7 +125,7 @@ const command = new SlashCommand()
               }
             );
     
-          if (player.queue.tracks.length > 1) {
+          if (player.queue.tracks.length > 0) {
             addQueueEmbed.addFields({
               name: "Position in queue",
               value: `${player.queue.tracks.length}`,
