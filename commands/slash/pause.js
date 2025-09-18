@@ -46,7 +46,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		player.pause(true);
+		player.pause();
 		return interaction.reply({
 			embeds: [
 				new EmbedBuilder()

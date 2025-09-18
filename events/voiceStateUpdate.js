@@ -35,14 +35,14 @@ module.exports = async (client, oldState, newState) => {
 		oldState.serverMute == false &&
 		newState.id === client.config.clientId
 	) {
-		return player.pause(true);
+		return player.pause();
 	}
 	if (
 		newState.serverMute == false &&
 		oldState.serverMute == true &&
 		newState.id === client.config.clientId
 	) {
-		return player.pause(false);
+		return player.resume();
 	}
 	// move check first as it changes type
 	if (stateChange.type === "MOVE") {
@@ -72,7 +72,7 @@ module.exports = async (client, oldState, newState) => {
 			if (player.get("autoPause") === true) {
                     const members = stateChange.channel.members.filter(member => !member.user.bot).size
 		            if (members === 1 && player.paused && members !== player.prevMembers){
-					player.pause(false);
+					player.resume();
 					let playerResumed = new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setTitle(`Resumed!`, client.config.iconURL)
@@ -100,7 +100,7 @@ module.exports = async (client, oldState, newState) => {
 			const twentyFourSeven = player.get("twentyFourSeven");
 			if (player.get("autoPause") === true && player.get("autoLeave") === false) {
 				if (members === 0 && !player.paused && player.playing) {
-					player.pause(true);
+					player.pause();
 					
 					let playerPaused = new EmbedBuilder()
 						.setColor(client.config.embedColor)
@@ -156,7 +156,7 @@ module.exports = async (client, oldState, newState) => {
 				}
 			} else if (player.get("autoLeave") === true && player.get("autoPause") === true){
 				if (members === 0 && !player.paused && player.playing && twentyFourSeven) {
-					player.pause(true);
+					player.pause();
 					
 					let playerPaused = new EmbedBuilder()
 						.setColor(client.config.embedColor)
