@@ -48,11 +48,11 @@ const command = new SlashCommand()
 			  text: `The player will ${!autoPause ? "now be automatically" : "no longer be"} paused when everyone leaves the voice channel.`
 			});
     client.warn(
-      `Player: ${player.options.guild} | [${colors.blue(
+      `Player: ${player.options.guildId} | [${colors.blue(
         "AUTOPAUSE"
       )}] has been [${colors.blue(!autoPause ? "ENABLED" : "DISABLED")}] in ${
-        client.guilds.cache.get(player.options.guild)
-          ? client.guilds.cache.get(player.options.guild).name
+        client.guilds.cache.get(player.options.guildId)
+          ? client.guilds.cache.get(player.options.guildId).name
           : "a guild"
       }`
     );
