@@ -55,27 +55,29 @@ module.exports = async (client, interaction) => {
             ].some(function (match) {
                 return match.test(url) == true;
             });
-    
-            async function checkRegex() {
-                if (match == true) {
-                    let choice = []
-                    choice.push({ name: url, value: url })
-                    await interaction.respond(choice).catch(() => { });
-                }
-            }
-    
             // const Random = "ytsearch"[Math.floor(Math.random() * "ytsearch".length)];
             const Random = String.fromCharCode(0x41 + Math.floor(Math.random() * 0x1A));
     
             if (["play", "playnext"].includes(interaction.commandName)) {
-                checkRegex()
-                const result = await yt.search(url || Random, {
-                    safeSearch: false,
-                    limit: 25
-                });
+                // Return the url back if it's match to the pattern
+                if (match == true) {
+                    let choice = []
+                    choice.push({ name: url, value: url })
+                    return await interaction.respond(choice).catch(() => { });
+                }
 
-                const choice = result.map(x => ({ name: x.title, value: x.url }));
-                return await interaction.respond(choice).catch(() => { });
+                try {
+                    const result = await yt.search(url || Random, {
+                        safeSearch: false,
+                        limit: 25
+                    });
+
+                    const choice = result.map(x => ({ name: x.title, value: x.url }));
+                    return await interaction.respond(choice).catch(() => { });
+                } catch (err) {
+                    console.log(err);
+                    return interaction.respond([]).catch(() => { });
+                }
             } else if (result.loadType === "LOAD_FAILED" || "NO_MATCHES")
                 return;
         }
