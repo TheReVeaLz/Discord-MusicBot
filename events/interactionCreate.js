@@ -47,11 +47,11 @@ module.exports = async (client, interaction) => {
             if (url.length < 3) return interaction.respond([]).catch(() => { });
     
             const match = [
-                /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/,
-                /^(?:spotify:|https:\/\/[a-z]+\.spotify\.com\/(track\/|user\/(.*)\/playlist\/|playlist\/))(.*)$/,
-                /^https?:\/\/(?:www\.)?deezer\.com\/[a-z]+\/(track|album|playlist)\/(\d+)$/,
-                /^(?:(https?):\/\/)?(?:(?:www|m)\.)?(soundcloud\.com|snd\.sc)\/(.*)$/,
-                /(?:https:\/\/music\.apple\.com\/)(?:.+)?(artist|album|music-video|playlist)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)/
+                /^((?:https?:)?\/\/)?(?:www\.|m\.)?(?:youtube(?:-nocookie)?\.com|youtu\.be)\/[\w\-?=&]+/,
+                /^(?:spotify:|(?:https?:\/\/)?[a-z]+\.spotify\.com\/(?:track\/|playlist\/|user\/.*\/playlist\/)).+/,
+                /^((?:https?:)?\/\/)?(?:www\.)?deezer\.com\/[a-z]+\/(?:track|album|playlist)\/\d+/,
+                /^((?:https?:)?\/\/)?(?:www\.|m\.)?soundcloud\.com\/.+/,
+                /^((?:https?:)?\/\/)?music\.apple\.com\/.+\/(?:artist|album|music-video|playlist)\/.+/
             ].some(function (match) {
                 return match.test(url) == true;
             });
@@ -72,7 +72,7 @@ module.exports = async (client, interaction) => {
                         limit: 25
                     });
 
-                    const choice = result.map(x => ({ name: x.title, value: x.url }));
+                    const choice = result.map(x => ({ name: `[${x.durationFormatted}] ${x.title}`.slice(0, 100), value: x.url }));
                     return await interaction.respond(choice).catch(() => { });
                 } catch (err) {
                     console.log(err);
