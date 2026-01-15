@@ -67,7 +67,7 @@
     "rlyrics": "^2.0.1",
     "systeminformation": "^5.9.12",
     "winston": "^3.3.3",
-    "youtube-sr": "github:TheReVeaLz/youtube-sr"
+    "youtube-sr": "github:TheReVeaLz/youtube-sr#feat/nextMusic"
   },
   "devDependencies": {
     "prettier": "3.5.3"
