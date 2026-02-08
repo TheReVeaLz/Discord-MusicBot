@@ -76,7 +76,7 @@ module.exports = async (client, oldState, newState) => {
 		.setColor(client.config.embedColor)
 		.setTitle("Resumed!")
 		.setDescription(
-			`Playing [${player.queue.current.title}](${player.queue.current.uri})`
+			`Playing [${player.queue.current?.info?.title}](${player.queue.current?.info?.uri})`
 		)
 		.setFooter({ text: "Playback resumed." });
 
