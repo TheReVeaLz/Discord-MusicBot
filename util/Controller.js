@@ -58,10 +58,6 @@ module.exports = async (client, interaction) => {
 			setTimeout(() => {
 				msg.delete();
 			}, 5000);
-	
-			interaction.update({
-				components: [client.createController(player.options.guildId, player)],
-			});
 			return;
 		}
 	
