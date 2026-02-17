@@ -37,7 +37,7 @@ const command = new SlashCommand()
 		}
 		
 		if (player.twentyFourSeven) {
-			player.stopPlaying();
+			player.stopPlaying(true, true);
 			player.set("autoQueue", false);
 		} else {
 			player.destroy();

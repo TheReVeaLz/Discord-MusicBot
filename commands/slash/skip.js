@@ -37,7 +37,7 @@ const command = new SlashCommand()
 			} 
 			const song = player.queue.current;
 			if (!player.queue.tracks.length) {
-				player.stopPlaying();
+				player.stopPlaying(true, true);
 			} else {
 				player.skip();
 			}

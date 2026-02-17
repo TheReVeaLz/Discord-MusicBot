@@ -55,7 +55,7 @@
     "js-yaml": "^4.1.0",
     "jsoning": "^1.0.1",
     "lavacord": "^2.2.0",
-    "lavalink-client": "^2.5.7",
+    "lavalink-client": "^2.9.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",

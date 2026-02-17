@@ -44,7 +44,7 @@ module.exports = async (client, interaction) => {
 		}
 	
 		if (property === "Stop") {
-			player.stopPlaying();
+			player.stopPlaying(true, true);
 			player.set("autoQueue", false);
 			player.destroy();
 			client.warn(`Player: ${ player.options.guildId } | Successfully stopped the player`);
@@ -112,7 +112,7 @@ module.exports = async (client, interaction) => {
 		if (property === "Next") {
 			const song = player.queue.current;
 			if (!player.queue.tracks.length) {
-				player.stopPlaying();
+				player.stopPlaying(true, true);
 			} else {
 				player.skip();
 			}
